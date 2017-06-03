@@ -14,31 +14,44 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-3">
                 <h1>XYZ Tile Maker</h1>
-                <p>大きな画像からマップタイルを作成します。　<a href="../sample/sample.html">サンプル</a><br />
-                マップタイルの利用サンプルも同梱</p>
+                <hr />
+                <p>大きな画像からマップタイルを作成します。
+                    <br /><a href="../sample/sample.html" class="btn btn-info">サンプル</a>
+                </p>
+                <hr />
+                <p> マップタイルの利用サンプルも同梱。インタラクティブマップのライブラリ、<a href="http://leafletjs.com/" target="_brank">Leaflet</a> を使用しています。</p>
             </div>
-        </div>
-        <div class="row" style="padding:10px 0;">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <div id="drop_zone">画像をドロップ</div>
-            </div>
-        </div>
-        <div class="row" style="padding:10px 0;">
-            <div id="alert" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            </div>
-        </div>
-        <div class="row" style="padding:10px 0;">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <div class="progress">
-                    <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-9">
+                <div class="row" style="padding:10px 0;">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div id="drop_zone">画像をドロップ
+                            <br /><span style="font-size: 1rem;">または、クリックでファイル選択</span></div>
+                    </div>
+                </div>
+                <div class="row" style="padding:10px 0;">
+                    <div id="alert" class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    </div>
+                </div>
+                <div id="progress-row" class="row" style="padding:10px 0;display: none;">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <div class="progress">
+                            <div id="progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <a id="zip-dl" href="#" class="btn btn-warning btn-lg btn-block" style="display:none;">ダウンロード</a>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <a id="zip-dl" href="#" class="btn btn-primary btn-lg btn-block" style="display:none;">ダウンロード</a>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center;">
+            <hr />
+            www.yambal.net
             </div>
         </div>
     </div>
@@ -55,20 +68,22 @@
             var blobUrl;
             var zipUrl;
 
-            function setProgress(now, max){
+            function setProgress(now, max) {
                 $("#progress").attr("aria-valuemax", max);
                 $("#progress").attr("aria-valuenow", now);
-                $("#progress").css('width',  Math.floor((now / max) * 100) + "%");
+                $("#progress").css('width', Math.floor((now / max) * 100) + "%");
             }
 
             $('#drop_zone').filereader().on('files', function(event) {
+                $("#alert").html("");
                 $("#zip-dl").hide();
+                $("#progress-row").show();
                 setProgress(1, 100);
 
                 window.URL.revokeObjectURL(blobUrl);
                 window.URL.revokeObjectURL(zipUrl);
 
-                if (event.files[0].type == "image/png" || event.files[0].type == "image/jpeg") {
+                if (event.files[0] && (event.files[0].type == "image/png" || event.files[0].type == "image/jpeg")) {
                     setProgress(2, 100);
 
                     var fileNames = event.files[0].name.split(".");
@@ -102,6 +117,7 @@
                                     zipUrl = window.URL.createObjectURL(content);
                                     $("#zip-dl").attr('href', zipUrl).attr('download', fileName + '.zip');
                                     $("#zip-dl").show();
+                                    $("#progress-row").hide();
                                 });
                         }, function(p, max) {
                             setProgress(p, max);
@@ -110,6 +126,7 @@
                 } else {
                     $("#alert").append('<div class="alert alert-warning alert-dismissible fade show" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>エラー</strong> 使用できるのは JPEG と PNG ファイルです</div>');
                     setProgress(0, 100);
+                    $("#progress-row").hide();
                 }
             });
         });
