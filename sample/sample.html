@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>IMG_4239</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"/>
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		var std = L.tileLayer("tiles/IMG_4239-{z}-{x}-{y}.png", {
+			maxZoom:5,
+			maxNativeZoom:5,
+			minZoom:0,
+			minNativeZoom:0,
+			errorTileUrl:"http://placehold.jp/256x256.png?text=no%20tile"
+		});
+		var myMap = L.map("map", {
+			center: [0, 0],
+			zoom: 0,
+			layers: [std]
+		});
+	</script>
+</body>
+</html>
