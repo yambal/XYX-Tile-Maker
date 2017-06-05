@@ -35,6 +35,8 @@ a:focus, a:hover {
 	border-radius: 3px;
 	cursor: pointer;
 
+	line-height: 1.5rem;
+
 	transition-property: background-color, color, left;
   transition-duration: 0.5s;
 }
