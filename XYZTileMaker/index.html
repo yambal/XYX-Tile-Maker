@@ -59,6 +59,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/jszip.min.js"></script>
+    <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/jquery.filereader.js"></script>
     <script type="text/javascript" src="js/jquery.imgmeasure.js"></script>
     <script type="text/javascript" src="js/jquery.xyztile.js"></script>
@@ -66,7 +67,15 @@
     (function($) {
         $(document).ready(function() {
             var blobUrl;
-            var zipUrl;
+            //var zipUrl;
+            var zipContent;
+            var zipedFileName;
+
+            $("#zip-dl").click(function(event) {
+              if(zipContent){
+                saveAs(zipContent, zipedFileName);
+              }
+            });
 
             function setProgress(now, max) {
                 $("#progress").attr("aria-valuemax", max);
@@ -75,13 +84,16 @@
             }
 
             $('#drop_zone').filereader().on('files', function(event) {
+                zipContent = null;
+                zipedFileName = null;
+
                 $("#alert").html("");
                 $("#zip-dl").hide();
                 $("#progress-row").show();
                 setProgress(1, 100);
 
                 window.URL.revokeObjectURL(blobUrl);
-                window.URL.revokeObjectURL(zipUrl);
+                //window.URL.revokeObjectURL(zipUrl);
 
                 if (event.files[0] && (event.files[0].type == "image/png" || event.files[0].type == "image/jpeg")) {
                     setProgress(2, 100);
@@ -98,6 +110,7 @@
 
                         // タイルを作成
                         $.xyztile.make(blobUrl, wdth, height, fileName, function(files, format, maxZoom) {
+                            zipedFileName = fileName + '.zip';
 
                             // zip
                             var zip = new JSZip();
@@ -114,8 +127,12 @@
                                     type: "blob"
                                 })
                                 .then(function(content) {
+                                    zipContent = content;
+                                    /*
                                     zipUrl = window.URL.createObjectURL(content);
                                     $("#zip-dl").attr('href', zipUrl).attr('download', fileName + '.zip');
+                                    
+                                    */
                                     $("#zip-dl").show();
                                     $("#progress-row").hide();
                                 });
