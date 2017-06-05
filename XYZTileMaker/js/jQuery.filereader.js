@@ -1,3 +1,4 @@
+//
 (function($) {
     $.fn.filereader = function(options) {
         var me = this;

@@ -1,3 +1,4 @@
+//
 jQuery.imgmeasure = (function($) {
 
     function _measure(url, callback) {
