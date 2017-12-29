@@ -13,13 +13,13 @@ jQuery.imgmeasure = (function($) {
         img.style.display = 'none';
 
         img.onload = function() {
-            if(img.naturalWidth === undefined){
-              width  = img.naturalWidth;
-            }else if(img.naturalHeight === undefined){
-              height = img.naturalHeight;
-            }else{
-              width  = img.width;
-              height = img.height;
+            if (img.naturalWidth === undefined) {
+                width = img.naturalWidth;
+            } else if (img.naturalHeight === undefined) {
+                height = img.naturalHeight;
+            } else {
+                width = img.width;
+                height = img.height;
             }
             document.body.removeChild(img);
 
@@ -30,7 +30,7 @@ jQuery.imgmeasure = (function($) {
     };
 
     return {
-        measure:_measure
+        measure: _measure
     };
 
 })(jQuery);
